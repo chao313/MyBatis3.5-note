@@ -56,7 +56,9 @@ public class SqlSessionFactoryBuilder {
      */
     public SqlSessionFactory build(Reader reader, String environment, Properties properties) {
         try {
-            //解析参数，parse成为基方法需要的参数
+            /**
+             *解析参数，parse成为基方法需要的参数
+             */
             XMLConfigBuilder parser = new XMLConfigBuilder(reader, environment, properties);
             return build(parser.parse());
         } catch (Exception e) {
@@ -93,7 +95,9 @@ public class SqlSessionFactoryBuilder {
      */
     public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
         try {
-            //解析参数，parse成为基方法需要的参数
+            /**
+             *解析参数，parse成为基方法需要的参数
+             */
             XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
             return build(parser.parse());
         } catch (Exception e) {
@@ -111,6 +115,7 @@ public class SqlSessionFactoryBuilder {
     /**
      * 所有Build的基方法
      * 这里只使用了DefaultSqlSessionFactory
+     *
      * @param config 配置信息存储对象
      * @return
      */

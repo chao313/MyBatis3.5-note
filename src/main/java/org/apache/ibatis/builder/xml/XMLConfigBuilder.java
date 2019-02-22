@@ -99,15 +99,31 @@ public class XMLConfigBuilder extends BaseBuilder {
         this.parser = parser;
     }
 
+    /**
+     * 由
+     * {@link org.apache.ibatis.session.SqlSessionFactoryBuilder#build(InputStream, String, Properties)}
+     * 调用，就行xml配置文件解析
+     */
     public Configuration parse() {
         if (parsed) {
             throw new BuilderException("Each XMLConfigBuilder can only be used once.");
         }
         parsed = true;
+        /**
+         * parser.evalNode("/configuration")
+         * 解析Xml，转换为XNode
+         */
         parseConfiguration(parser.evalNode("/configuration"));
         return configuration;
     }
 
+    /**
+     * 由本类方法调用
+     * 具体的解析xml配置的算法
+     * 由此看出配置的内容
+     * properties，settings，typeAliases，plugins，objectFactory，objectWrapperFactory，
+     * reflectorFactory，environments，databaseIdProvider，typeHandlers，mappers
+     */
     private void parseConfiguration(XNode root) {
         try {
             //issue #117 read properties first
