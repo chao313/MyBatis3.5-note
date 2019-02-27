@@ -94,7 +94,6 @@ public interface SqlSession extends Closeable {
      * objects.
      * Eg. Return a of Map[Integer,Author] for selectMap("selectAuthors","id")
      *
-     *
      * @param <K>       the returned Map keys type
      * @param <V>       the returned Map values type
      * @param statement Unique identifier matching the statement to use.
@@ -246,13 +245,16 @@ public interface SqlSession extends Closeable {
 
     /**
      * Flushes batch statements and commits database connection.
+     * 冲刷batch语句，并且提交数据库连接
      * Note that database connection will not be committed if no updates/deletes/inserts were called.
+     * 注意数据库练级不会提交，如果没有增删改调用
      * To force the commit call {@link SqlSession#commit(boolean)}
      */
     void commit();
 
     /**
      * Flushes batch statements and commits database connection.
+     * 冲刷batch语句，并且提交数据库连接
      *
      * @param force forces connection commit
      */
@@ -260,7 +262,9 @@ public interface SqlSession extends Closeable {
 
     /**
      * Discards pending batch statements and rolls database connection back.
+     * 丢弃即将批量的语句，并且回滚数据库连接
      * Note that database connection will not be rolled back if no updates/deletes/inserts were called.
+     * 注意数据库连接不会回滚，如果没有增删改被调用
      * To force the rollback call {@link SqlSession#rollback(boolean)}
      */
     void rollback();
@@ -295,6 +299,7 @@ public interface SqlSession extends Closeable {
     /**
      * Retrieves current configuration
      * 获取当前的配置信息
+     *
      * @return Configuration
      */
     Configuration getConfiguration();

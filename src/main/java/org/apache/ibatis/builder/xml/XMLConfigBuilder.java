@@ -381,30 +381,58 @@ public class XMLConfigBuilder extends BaseBuilder {
         }
     }
 
+    /**
+     * 根基XML转换成的XNode的<Mappers/>，解析其中的mapper
+     */
     private void mapperElement(XNode parent) throws Exception {
         if (parent != null) {
             for (XNode child : parent.getChildren()) {
+                /**
+                 * 如果子节点的名字是package,就获取其中的name属性
+                 * -> 把mapperPackage放入configuration中
+                 */
                 if ("package".equals(child.getName())) {
                     String mapperPackage = child.getStringAttribute("name");
                     configuration.addMappers(mapperPackage);
                 } else {
+                    /**
+                     * 获取resource和url和class的属性值
+                     */
                     String resource = child.getStringAttribute("resource");
                     String url = child.getStringAttribute("url");
                     String mapperClass = child.getStringAttribute("class");
                     if (resource != null && url == null && mapperClass == null) {
+                        /**
+                         * 如果只有 resource 不为空
+                         * -> 底层通过class.getResourceAsStream 来获取classpath下的资源
+                         */
                         ErrorContext.instance().resource(resource);
                         InputStream inputStream = Resources.getResourceAsStream(resource);
                         XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
                         mapperParser.parse();
                     } else if (resource == null && url != null && mapperClass == null) {
+                        /**
+                         * 如果只有 url 不为空
+                         * ->通过URl获取输入流,由XMLMapperBuilder解析
+                         */
                         ErrorContext.instance().resource(url);
                         InputStream inputStream = Resources.getUrlAsStream(url);
                         XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, url, configuration.getSqlFragments());
                         mapperParser.parse();
                     } else if (resource == null && url == null && mapperClass != null) {
+                        /**
+                         * 如果只有 mapperClass 不为空
+                         * -> 根据class的限度名，获取class（底层就是class.classForName {@link org.apache.ibatis.io.ClassLoaderWrapper#classForName(String)}）
+                         */
                         Class<?> mapperInterface = Resources.classForName(mapperClass);
+                        /**
+                         * 把接口添加到{@link Configuration 的MapperRegistry }里面
+                         */
                         configuration.addMapper(mapperInterface);
                     } else {
+                        /**
+                         * 如果有一个以上不为null,抛出异常
+                         */
                         throw new BuilderException("A mapper element may only specify a url, resource or class, but not more than one.");
                     }
                 }
