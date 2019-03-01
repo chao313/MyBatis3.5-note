@@ -107,13 +107,18 @@ public final class TypeHandlerRegistry {
         register(JdbcType.FLOAT, new FloatTypeHandler());
 
         /**
-         *
+         * Double double 和 double的转换
          */
         register(Double.class, new DoubleTypeHandler());
         register(double.class, new DoubleTypeHandler());
         register(JdbcType.DOUBLE, new DoubleTypeHandler());
 
         register(Reader.class, new ClobReaderTypeHandler());
+        /**
+         * String 转 sql的char,clob,varchar,longvarchar,nvarchar,nchar,nclob
+         *
+         * sql的char,clob,varchar,longvarchar,nvarchar,nchar,nclob 转String
+         */
         register(String.class, new StringTypeHandler());
         register(String.class, JdbcType.CHAR, new StringTypeHandler());
         register(String.class, JdbcType.CLOB, new ClobTypeHandler());
@@ -133,9 +138,15 @@ public final class TypeHandlerRegistry {
         register(Object.class, JdbcType.ARRAY, new ArrayTypeHandler());
         register(JdbcType.ARRAY, new ArrayTypeHandler());
 
+        /**
+         * BigInteger 转 sql的bigint
+         */
         register(BigInteger.class, new BigIntegerTypeHandler());
         register(JdbcType.BIGINT, new LongTypeHandler());
 
+        /**
+         *
+         */
         register(BigDecimal.class, new BigDecimalTypeHandler());
         register(JdbcType.REAL, new BigDecimalTypeHandler());
         register(JdbcType.DECIMAL, new BigDecimalTypeHandler());
